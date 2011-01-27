@@ -15,7 +15,6 @@ function output:reset(width, height, spacing)
 	self.spacing = self.spacing or 4
 
 	self.lines = {}
-	self.scroll = 0
 
 	self.char_width = love.graphics.getFont():getWidth("_")
 	self.char_height = love.graphics.getFont():getHeight("|")
@@ -66,7 +65,6 @@ function output:push(...)
 		self.lines[#self.lines+1] = line
 		added = added + 1
 	end
-	self.scroll = #self.lines
 	return added
 end
 
