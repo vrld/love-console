@@ -93,15 +93,11 @@ function love.run()
 end
 
 function print(...)
-	local s = {...}
-	if #s == 0 then
-		output:push(" ")
-		return
+	local n_args, s = select('#', ...), {...}
+	for i = 1,n_args do
+		s[i] = (s[i] == nil) and "nil" or tostring(s[i])
 	end
-
-	for i,k in ipairs(s) do
-		s[i] = tostring(k)
-	end
+	if n_args == 0 then s = {" "} end
 	output:push(table.concat(s, "    "))
 end
 
