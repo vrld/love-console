@@ -12,6 +12,7 @@ prompt1, prompt2 = "> ", "| "
 local prompt = prompt1
 function input:onCommand(cmd)
 	output:push(prompt, cmd)
+	cmd = cmd:gsub("^=%s?", "return "):gsub("^return%s+(.*)(%s*)$", "print(%1)%2")
 	chunk = chunk and table.concat({chunk, cmd}, " ") or cmd
 	local ok, out = pcall(function() assert(loadstring(chunk))() end)
 	if not ok and out:match("'<eof>'") then
@@ -47,7 +48,7 @@ function love.run()
 	output = OUT.new()
 
 	print("|  '/\\'\\  / /_\\  __  /' /\\ |\\ | /_ /\\ |   /_\\")
-	print("|__ \\/  \\/  \\_       \\, \\/ | \\|  / \\/ |__ \\_   (v.1e-128)")
+	print("|__ \\/  \\/  \\_       \\, \\/ | \\|  / \\/ |__ \\_   (v.1e-127)")
 	print()
 	print("<Escape> toggles the console. Call quit() or exit() to quit.")
 	print("Try hitting <Tab> to complete your current input.")
