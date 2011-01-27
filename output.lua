@@ -75,4 +75,16 @@ function output:pop(n)
 end
 
 function output:push_char(c, ...)
+	if not c then return end
+
+	local line = self.lines[#self.lines]
+
+	if line:len() + 1 < self.chars_per_line then
+		line = line .. c
+	else
+		line = c
+	end
+
+	self.lines[#self.lines] = line
+	return self:push_char(...)
 end
