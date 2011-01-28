@@ -9,15 +9,16 @@ function new(...)
 	return o:reset(...)
 end
 
-function output:reset(width, height, spacing)
+function output:reset(font, width, height, spacing)
+	self.font = font or love.graphics.getFont()
 	self.width = width or love.graphics.getWidth()
 	self.height = height or love.graphics.getHeight()
 	self.spacing = self.spacing or 4
 
 	self.lines = {}
 
-	self.char_width = love.graphics.getFont():getWidth("_")
-	self.char_height = love.graphics.getFont():getHeight("|")
+	self.char_width  = self.font:getWidth("_")
+	self.char_height = self.font:getHeight("|")
 	self.line_height = self.char_height + self.spacing
 
 	self.lines_per_screen = math.floor(self.height / self.line_height) - 1
@@ -28,10 +29,13 @@ end
 
 function output:draw(ox,oy, cursor_pos)
 	assert(ox and oy)
+	local current_font = love.graphics.getFont()
+	love.graphics.setFont(self.font)
 	local lines_to_display = self.lines_per_screen - math.floor((self.height - oy) / self.line_height)
 	for i = #self.lines, math.max(1, #self.lines - lines_to_display), -1 do
 		love.graphics.print(self.lines[i], ox, oy - (#self.lines - i + 1) * self.line_height)
 	end
+	love.graphics.setFont(current_font)
 
 	if not cursor_pos then return end
 	local color = {love.graphics.getColor()}
