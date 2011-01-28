@@ -165,7 +165,7 @@ function input:keypressed(key, code)
 	if key ~= 'tab' then self.complete_next = nil end
 	if self.hooks[key] then
 		self.hooks[key](self)
-	elseif code > 31 then
+	elseif code > 31 and code < 256 then
 		table.insert(self.line, self.cursor, string.char(code))
 		self.cursor = self.cursor + 1
 	end
