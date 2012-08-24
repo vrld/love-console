@@ -86,7 +86,7 @@ local function set_default_hooks(inp)
 
 		-- find completion table
 		local tables = {}
-		for t in inp:gmatch("[^\.]+") do
+		for t in inp:gmatch("[^%.]+") do
 			tables[#tables+1] = t
 		end
 		local pattern = table.concat{"^", (tables[#tables] or ""):gsub("[%[%]%(%)]", function(s) return "%"..s end), ".*"}
@@ -155,7 +155,8 @@ local inp = {
 		complete_next = nil,
 		hooks = {},
 		complete_base = _G,
-		onCommand = _NULL_
+		onCommand = _NULL_,
+		unfocus = _NULL_
 	}
 	set_default_hooks(inp)
 	return setmetatable(inp, input)
@@ -163,6 +164,10 @@ end
 
 function input:keypressed(key, code)
 	if key ~= 'tab' then self.complete_next = nil end
+	if key == 'escape' then
+		self:unfocus()
+		return
+	end
 	if self.hooks[key] then
 		self.hooks[key](self)
 	elseif code > 31 and code < 256 then

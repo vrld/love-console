@@ -13,6 +13,9 @@ function new(font, width, height, spacing)
 	self._in.onCommand = function(_, cmd)
 		return self:onCommand(cmd)
 	end
+	self._in.unfocus = function(_)
+		return self:unfocus()
+	end
 	self._in.complete_add_parens = true
 	self._in.complete_base = _G
 
@@ -63,7 +66,7 @@ function console:focus()
 		_current_focus:unfocus()
 	end
 	self._keypressed = love.keypressed
-	love.keypressed = function(...) self._in.keypressed(...) end
+	love.keypressed = function(...) self._in:keypressed(...) end
 	_current_focus = self
 end
 
