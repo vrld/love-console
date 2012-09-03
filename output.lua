@@ -29,7 +29,7 @@ end
 
 function output:draw(ox,oy, cursor_pos)
 	assert(ox and oy)
-	local current_font = love.graphics.getFont()
+	local current_font = love.graphics.getFont() or self.font
 	love.graphics.setFont(self.font)
 	local lines_to_display = self.lines_per_screen - math.floor((self.height - oy) / self.line_height)
 	for i = #self.lines, math.max(1, #self.lines - lines_to_display), -1 do
